@@ -1,0 +1,83 @@
+<html>
+<head></head>
+<body>
+
+<style>
+	.recommendation {
+		display:flex;
+		overflow: hidden;
+		}
+	.container {
+		width: 100%;
+		display:flex;	
+	}
+	section {
+		width:800px;
+	}
+
+</style>
+
+
+<section>
+	<div class="container">
+
+		<div class="reference">
+		</div>
+
+		<button onclick="prev();"><</button>
+		<div class="recommendation">
+	
+		</div>
+		<button onclick="next();">></button>
+	</div>
+</section>
+
+<script>
+
+function next() {
+	var divRecommendation = document.getElementsByClassName("recommendation")[0];
+	var firstChild =divRecommendation.firstElementChild;
+	divRecommendation.removeChild(firstChild);
+	divRecommendation.appendChild(firstChild);
+}
+
+function prev() {
+	var divRecommendation = document.getElementsByClassName("recommendation")[0];
+	var lastChild =divRecommendation.lastElementChild;
+	divRecommendation.removeChild(lastChild);
+	divRecommendation.insertBefore(lastChild, divRecommendation.firstElementChild);
+}
+
+function genCard(product) {
+	var div = document.createElement('div');
+	div.className = 'card';
+	
+	var img = document.createElement('img');
+	var imgName = "http:" + product.imageName;
+	img.src = imgName;
+	div.appendChild(img);
+	
+	return div;
+}
+
+function X(ret) {
+	var size = ret.data.widget.size;
+	var reference = ret.data.reference;
+	var products = ret.data.recommendation;
+
+	var divRef = document.getElementsByClassName("reference")[0];
+	divRef.appendChild(genCard(reference.item));
+	
+	var divRecommendation = document.getElementsByClassName("recommendation")[0];
+	for (i = 0; i < size; i++) {	
+		divRecommendation.appendChild(genCard(products[i]));	
+	}
+
+}
+
+var script = document.createElement('script');
+script.src = 'http://roberval.chaordicsystems.com/challenge/challenge.json?callback=X'
+document.getElementsByTagName('head')[0].appendChild(script);
+</script>
+</body>
+</html>
