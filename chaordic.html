@@ -1,38 +1,82 @@
 <html>
-<head></head>
+<head>
+	<meta charset="UTF-8"> 
+	<title>Vitrine Chaordic</title>
+</head>
 <body>
 
 <style>
-	.recommendation {
-		display:flex;
-		overflow: hidden;
-		}
-	.container {
-		width: 100%;
-		display:flex;	
-	}
-	section {
-		width:800px;
-	}
-
+.recommendation {
+	display:flex;
+	overflow: hidden;
+}
+.container {
+	width: 100%;
+	display:flex;	
+	border: 1px solid lightcyan;
+}
+.slider {
+	display:flex;
+	align-items:center;
+}
+.recommendationContainer{
+	overflow:hidden;
+}
+h2 {
+	margin: 0;
+	background-color:lightcyan;
+	font-size:18px;
+	color:darkblue;
+	padding: 8px 0 8px 0;
+}
+p{
+	font-size:13px;
+}
+button {
+	height: 80px;
+}
+.red {
+	color:red;
+}
+.card {
+	padding: 10px;
+}
+section {
+	width:800px;
+}
 </style>
 
 
 <section>
 	<div class="container">
-
-		<div class="reference">
-		</div>
-
-		<button onclick="prev();"><</button>
-		<div class="recommendation">
 	
+		<div class="referenceContainer">
+			<h2>Você Visitou:</h2>
+			<div class="reference">
+			</div>
+		</div>		
+		<div class="recommendationContainer">
+			<h2>Talvez se interesse por:</h2>
+			<div class="slider">
+				<button onclick="prev();"><</button>
+				<div class="recommendation">
+				</div>
+				<button onclick="next();">></button>
+			</div>
 		</div>
-		<button onclick="next();">></button>
 	</div>
 </section>
 
 <script>
+function encode_utf8(s) {
+  return unescape(encodeURIComponent(s));
+}
+
+function decode_utf8(s) {
+  return decodeURIComponent(escape(s));
+}
+
+
 
 function next() {
 	var divRecommendation = document.getElementsByClassName("recommendation")[0];
@@ -53,10 +97,37 @@ function genCard(product) {
 	div.className = 'card';
 	
 	var img = document.createElement('img');
-	var imgName = "http:" + product.imageName;
-	img.src = imgName;
+	var imgLink = "http:" + product.imageName;
+	img.src = imgLink;
 	div.appendChild(img);
+
+	var spanName = document.createElement('p');
+	var name = product.name;
+	if(name.length > 72){
+		name = name.substring(0,69) + "...";
+	}
+
+	/* Ajuste técnico na questão do encoding */
+	spanName.innerHTML = name.replace(/Ã¢/g, "â").replace(/â€/g,"\"").replace(/Ã£/g,"ã").replace(/Ã­/g,"í").replace(/Ã/g,"à");	
+	spanName.className = "nome";
+	div.appendChild(spanName);
 	
+	if(product.oldPrice != undefined && product.oldPrice != null){
+		var spanOldPrice = document.createElement('p');
+		spanOldPrice.innerHTML = "De: " + product.oldPrice;
+		div.appendChild(spanOldPrice);
+	}
+
+	var spanPrice = document.createElement('p');
+	spanPrice.innerHTML = "Por: <strong>" + product.price + "</strong>";
+	spanPrice.className="red";
+	div.appendChild(spanPrice);
+	
+	var spanOu = document.createElement('p');
+	spanOu.innerHTML = product.productInfo.paymentConditions;
+	spanOu.className="red";
+	div.appendChild(spanOu);
+
 	return div;
 }
 
