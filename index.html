@@ -68,16 +68,6 @@ section {
 </section>
 
 <script>
-function encode_utf8(s) {
-  return unescape(encodeURIComponent(s));
-}
-
-function decode_utf8(s) {
-  return decodeURIComponent(escape(s));
-}
-
-
-
 function next() {
 	var divRecommendation = document.getElementsByClassName("recommendation")[0];
 	var firstChild =divRecommendation.firstElementChild;
@@ -147,7 +137,7 @@ function X(ret) {
 }
 
 var script = document.createElement('script');
-script.src = 'http://roberval.chaordicsystems.com/challenge/challenge.json?callback=X'
+script.src = "//roberval.chaordicsystems.com/challenge/challenge.json?callback=X"
 document.getElementsByTagName('head')[0].appendChild(script);
 </script>
 </body>
